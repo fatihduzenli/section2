@@ -1,9 +1,6 @@
 package com.eazybank.accounts.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jdk.jfr.Enabled;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -14,10 +11,11 @@ import org.hibernate.annotations.GenericGenerator;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class Customer extends BaseEntity  {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id")
     private Long customerId;
     private String name;
