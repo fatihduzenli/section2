@@ -11,16 +11,70 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path="/api", produces = {MediaType.APPLICATION_JSON_VALUE})
-@AllArgsConstructor
+@RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
+
 public class AccountsController {
 
-  private IAccountService iAccountsService;
-  @PostMapping("/create")
-  public ResponseEntity<ResponseDto> createAccount(@RequestBody CustomerDto customerDto) {
-    iAccountsService.createAccount(customerDto);
-    return ResponseEntity
-            .status(HttpStatus.CREATED)
-            .body(new ResponseDto(AccountsConstants.STATUS_201, AccountsConstants.MESSAGE_201));
-  }
+    private final IAccountService iAccountsService;
+
+    public AccountsController(IAccountService iAccountsService) {
+        this.iAccountsService = iAccountsService;
+    }
+
+
+    /**
+     * Creates a new account for a customer.
+     *
+     * @param customerDto The customer details to create a new account for.
+     * @return A ResponseEntity containing a ResponseDto with status code 201 and message "Account created successfully".
+     */
+    @PostMapping("/create")
+    public ResponseEntity<ResponseDto> createAccount(@RequestBody CustomerDto customerDto) {
+        iAccountsService.createAccount(customerDto);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new ResponseDto(AccountsConstants.STATUS_201, AccountsConstants.MESSAGE_201));
+    }
+
+    @GetMapping("/fetch")
+    public ResponseEntity<CustomerDto> fetchAccountDetails(@RequestParam String mobileNumber) {
+        CustomerDto customerDto = iAccountsService.fetchAccountDetails(mobileNumber);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(customerDto);
+    }
+
+        /**
+     * Updates the details of an existing account for a customer.
+     *
+     * @param customerDto The updated customer details to modify an existing account.
+     * @return A ResponseEntity containing a ResponseDto with status code 200 if the account is successfully updated, or 500 if an error occurs during the update process.
+     */
+    @PutMapping("/update")
+    public ResponseEntity<ResponseDto> updateAccountDetails(@RequestBody CustomerDto customerDto) {
+        boolean isUpdated = iAccountsService.updateAccount(customerDto);
+        if(isUpdated) {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new ResponseDto(AccountsConstants.STATUS_200, AccountsConstants.MESSAGE_200));
+        }else{
+            return ResponseEntity
+                    .status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new ResponseDto(AccountsConstants.STATUS_417, AccountsConstants.MESSAGE_417_UPDATE));
+        }
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<ResponseDto> deleteAccount(@RequestParam String mobileNumber) {
+        boolean isDeleted = iAccountsService.deleteAccount(mobileNumber);
+        if(isDeleted) {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new ResponseDto(AccountsConstants.STATUS_200, AccountsConstants.MESSAGE_200));
+        }else{
+            return ResponseEntity
+                    .status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new ResponseDto(AccountsConstants.STATUS_417, AccountsConstants.MESSAGE_417_DELETE));
+        }
+    }
 }
