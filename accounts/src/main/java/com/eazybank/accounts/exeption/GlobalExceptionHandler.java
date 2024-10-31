@@ -33,9 +33,45 @@ public ResponseEntity<ErrorResponseDto> handleCustomerAlreadyExistsException(Cus
     return new ResponseEntity<>(errorResponseDto, HttpStatus.BAD_REQUEST);
 }
 
+        /**
+     * This method handles the {@code NoHandlerFoundException} by returning a {@link ResponseEntity} with a "Resource not found" message and HTTP status NOT_FOUND.
+     *
+     * @param exception The {@code NoHandlerFoundException} that occurred.
+     * @return A {@link ResponseEntity} containing a "Resource not found" message and HTTP status NOT_FOUND.
+     */
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<String> handleNoHandlerFoundException(NoHandlerFoundException exception) {
         return new ResponseEntity<>("Resource not found", HttpStatus.NOT_FOUND);
+    }
+
+        /**
+     * This method handles the {@code ResourceNotFoundException} by creating an {@link ErrorResponseDto}
+     * with the provided exception message, HTTP status NOT_FOUND, and the current timestamp.
+     *
+     * @param exception The {@code ResourceNotFoundException} that occurred.
+     * @param webRequest The current web request that triggered the exception.
+     * @return A {@link ResponseEntity} containing the {@link ErrorResponseDto} with the specified details.
+     */
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleResourceNotFoundException(ResourceNotFoundException exception,
+                                                                                 WebRequest webRequest) {
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(webRequest.getDescription(false),
+                HttpStatus.NOT_FOUND,
+                exception.getMessage(),
+                LocalDateTime.now());
+
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponseDto> handleGlobalException(Exception exception,
+                                                                            WebRequest webRequest) {
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(webRequest.getDescription(false),
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                exception.getMessage(),
+                LocalDateTime.now());
+
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
