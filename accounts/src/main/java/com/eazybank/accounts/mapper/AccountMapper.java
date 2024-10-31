@@ -18,7 +18,7 @@ public class AccountMapper {
      * @see AccountsDto
      * @see Accounts
      */
-    public static AccountsDto  mapToAccountDto(AccountsDto accountsDto, Accounts accounts){
+    public static AccountsDto  mapToAccountDto( Accounts accounts, AccountsDto accountsDto){
         accountsDto.setAccountNumber(accounts.getAccountNumber());
         accountsDto.setAccountType(accounts.getAccountType());
         accountsDto.setBranchAddress(accounts.getBranchAddress());
@@ -37,7 +37,7 @@ public class AccountMapper {
      * @see AccountsDto
      * @see Accounts
      */
-    public Accounts mapToAccountEntity(AccountsDto accountsDto, Accounts accounts) {
+    public static Accounts mapToAccountEntity(AccountsDto accountsDto, Accounts accounts) {
         accounts.setAccountNumber(accountsDto.getAccountNumber());
         accounts.setAccountType(accountsDto.getAccountType());
         accounts.setBranchAddress(accountsDto.getBranchAddress());
