@@ -50,8 +50,7 @@ public class AccountServiceImpl implements IAccountService {
         }
 
         // Sets the creation timestamp and the creator's name.
-        customer.setCreatedAt(LocalDateTime.now());
-        customer.setCreatedBy("Fatih");
+
 
         // Saves the newly created customer to the database.
         Customer savedCustomer = customerRepository.save(customer);
@@ -73,8 +72,6 @@ public class AccountServiceImpl implements IAccountService {
         newAccount.setAccountNumber(randomAccNumber);
         newAccount.setAccountType(AccountsConstants.SAVINGS);
         newAccount.setBranchAddress(AccountsConstants.ADDRESS);
-        newAccount.setCreatedAt(LocalDateTime.now());
-        newAccount.setCreatedBy("FATIH");
         return newAccount;
     }
 
