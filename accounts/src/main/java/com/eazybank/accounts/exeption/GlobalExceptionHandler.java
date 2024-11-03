@@ -79,15 +79,24 @@ public ResponseEntity<ErrorResponseDto> handleCustomerAlreadyExistsException(Cus
         return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponseDto> handleGlobalException(Exception exception,
+    /**
+ * This method handles all exceptions that are not explicitly handled by other exception handlers.
+ * It creates an {@link ErrorResponseDto} with the provided exception message, HTTP status INTERNAL_SERVER_ERROR,
+ * and the current timestamp.
+ *
+ * @param exception The {@code Exception} that occurred.
+ * @param webRequest The current web request that triggered the exception.
+ * @return A {@link ResponseEntity} containing the {@link ErrorResponseDto} with the specified details.
+ */
+@ExceptionHandler(Exception.class)
+public ResponseEntity<ErrorResponseDto> handleGlobalException(Exception exception,
                                                                             WebRequest webRequest) {
-        ErrorResponseDto errorResponseDto = new ErrorResponseDto(webRequest.getDescription(false),
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                exception.getMessage(),
-                LocalDateTime.now());
+    ErrorResponseDto errorResponseDto = new ErrorResponseDto(webRequest.getDescription(false),
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            exception.getMessage(),
+            LocalDateTime.now());
 
-        return new ResponseEntity<>(errorResponseDto, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(errorResponseDto, HttpStatus.INTERNAL_SERVER_ERROR);
+}
 
 }
