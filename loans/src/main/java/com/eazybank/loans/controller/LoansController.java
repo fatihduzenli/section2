@@ -61,12 +61,12 @@ public class LoansController {
 
 
     @GetMapping("/fetch")
-    public ResponseEntity<ResponseDto> fetchLoan(@RequestParam("mobileNumber")
+    public ResponseEntity<LoanDto> fetchLoan(@RequestParam("mobileNumber")
                                             @Pattern(regexp = "^[0-9]{10}$", message = "Mobile number should be 10 digits") String mobileNumber) {
 
         LoanDto loanDto = iLoansService.fetchLoanDetails(mobileNumber);
         return ResponseEntity.status(200)
-                .body(new ResponseDto(LoansConstants.STATUS_200, LoansConstants.MESSAGE_200));
+                .body(loanDto);
     }
     @Operation(
             summary = "Update Loan Details REST API",
