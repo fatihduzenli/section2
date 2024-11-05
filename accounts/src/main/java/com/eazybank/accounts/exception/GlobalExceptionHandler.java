@@ -1,4 +1,4 @@
-package com.eazybank.accounts.exeption;
+package com.eazybank.accounts.exception;
 
 import com.eazybank.accounts.dto.ErrorResponseDto;
 import org.springframework.http.HttpHeaders;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
