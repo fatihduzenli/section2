@@ -5,20 +5,18 @@ import com.eazybank.accounts.dto.AccountsDto;
 import com.eazybank.accounts.dto.CustomerDto;
 import com.eazybank.accounts.entity.Accounts;
 import com.eazybank.accounts.entity.Customer;
-import com.eazybank.accounts.exeption.CustomerAlreadyExistsException;
-import com.eazybank.accounts.exeption.ResourceNotFoundException;
+import com.eazybank.accounts.exception.CustomerAlreadyExistsException;
+import com.eazybank.accounts.exception.ResourceNotFoundException;
 import com.eazybank.accounts.mapper.AccountMapper;
 import com.eazybank.accounts.mapper.CustomerMapper;
 import com.eazybank.accounts.repository.AccountsRepository;
 import com.eazybank.accounts.repository.CustomerRepository;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
 import com.eazybank.accounts.service.IAccountService;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
 
