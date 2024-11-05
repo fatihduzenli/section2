@@ -3,6 +3,7 @@ package com.eazybank.loans.service.impl;
 import com.eazybank.loans.constants.LoansConstants;
 import com.eazybank.loans.dto.LoanDto;
 import com.eazybank.loans.entity.Loans;
+import com.eazybank.loans.exceptions.ResourceNotFoundException;
 import com.eazybank.loans.mapper.LoanMapper;
 import com.eazybank.loans.repository.LoansRepository;
 import com.eazybank.loans.service.ILoansService;
@@ -47,7 +48,7 @@ public class LoansServiceImpl implements ILoansService {
     public LoanDto fetchLoanDetails(String mobileNumber) {
 
         Loans loans = loansRepository.findByMobileNumber(mobileNumber).orElseThrow(
-     //           () -> new R("Loan", "mobile number ", mobileNumber)
+                () -> new ResourceNotFoundException("Loan", "mobile number ", mobileNumber)
         );
 
         return LoanMapper.mapToLoanDto(loans, new LoanDto());
@@ -55,11 +56,20 @@ public class LoansServiceImpl implements ILoansService {
 
     @Override
     public boolean updateLoan(LoanDto loanDto) {
-        return false;
+
+     Loans loans= loansRepository.findByLoanNumber(loanDto.getLoanNumber()).orElseThrow(
+                ()-> new ResourceNotFoundException("Loan", "loan number", loanDto.getLoanNumber()));
+     LoanMapper.mapToLoanEntity(loanDto,loans);
+        loansRepository.save(loans);
+        return true;
     }
 
     @Override
     public boolean deleteLoan(String mobileNumber) {
-        return false;
+        Loans loans= loansRepository.findByMobileNumber(mobileNumber).orElseThrow(
+                () -> new ResourceNotFoundException("Loan", "mobile number ", mobileNumber)
+        );
+        loansRepository.deleteById(loans.getLoanId());
+        return true;
     }
 }
